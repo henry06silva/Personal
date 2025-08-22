@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mobile Workout — Minimal</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0b1020;
+      --muted: #6b7280;
+      --card: #f6f7f8;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0f14;
+        --fg: #e5e7eb;
+        --muted: #9aa1ad;
+        --card: #0f141b;
+        --accent: #60a5fa;
+        --border: #1f2937;
+      }
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Layout */
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px clamp(12px, 3vw, 20px) 88px;
+    }
+
+    header {
+      position: sticky;
+      top: 0; inset-inline: 0;
+      backdrop-filter: saturate(1.2) blur(6px);
+      -webkit-backdrop-filter: saturate(1.2) blur(6px);
+      background: color-mix(in oklab, var(--bg) 80%, transparent);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+    header .bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+    h1 { font-size: clamp(20px, 4.5vw, 28px); line-height: 1.2; margin: 0; }
+    .sub { color: var(--muted); font-size: 0.95rem; }
+
+    /* Actions */
+    .actions { margin-left: auto; display: flex; gap: 8px; }
+    .btn {
+      appearance: none; border: 1px solid var(--border); background: var(--card);
+      color: var(--fg); padding: 10px 12px; border-radius: 16px; font-size: 14px;
+      touch-action: manipulation; user-select: none; cursor: pointer;
+    }
+    .btn:active { transform: translateY(1px); }
+
+    /* Sections */
+    details.section { border: 1px solid var(--border); border-radius: 16px; background: var(--card); overflow: clip; }
+    details.section + details.section { margin-top: 14px; }
+    summary {
+      list-style: none; display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .chev { margin-left: auto; transition: transform .25s ease; }
+    details[open] .chev { transform: rotate(180deg); }
+    .s-title { font-weight: 700; }
+    .s-sub { color: var(--muted); font-size: 0.9rem; }
+
+    .content { padding: 8px 14px 14px; }
+    ol.exercises { margin: 0; padding: 0; list-style: none; }
+    li.exercise { display: flex; align-items: center; gap: 12px; padding: 10px 8px; border-top: 1px dashed var(--border); }
+    li.exercise:first-child { border-top: none; }
+
+    /* Checkbox */
+    .check { width: 22px; height: 22px; flex: 0 0 22px; accent-color: var(--accent); }
+    .label { flex: 1; font-size: 1rem; }
+
+    /* Footer tools */
+    .footer-tools {
+      position: fixed; bottom: 12px; inset-inline: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .footer-tools .btn { padding: 12px; border-radius: 18px; }
+
+    /* Links */
+    a { color: var(--accent); text-decoration: none; }
+    a:focus-visible, .btn:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
+
+    /* Improve tap targets on iOS */
+    * { -webkit-tap-highlight-color: rgba(0,0,0,0.06); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <div>
+        <h1>Mobile Workout</h1>
+        <div class="sub">Tap a section to expand • Tick as you go</div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="expandAll" aria-label="Expand all">Expand all</button>
+        <button class="btn" id="collapseAll" aria-label="Collapse all">Collapse</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="wrap">
+    <!-- I Plantar Fasciitis Stretch -->
+    <details class="section" id="sec-plantar">
+      <summary>
+        <span class="s-title">I. Plantar Fasciitis — Stretch</span>
+        <span class="s-sub">5 drills</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="pf1"><label class="label" for="pf1">Foam roller — stand</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="pf2"><label class="label" for="pf2">Ball — stand</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="pf3"><label class="label" for="pf3">Plantar band pull</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="pf4"><label class="label" for="pf4">Anterior tibialis</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="pf5"><label class="label" for="pf5">Fibularis longus</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- II Plyos -->
+    <details class="section" id="sec-plyos">
+      <summary>
+        <span class="s-title">II. Plyos</span>
+        <span class="s-sub">3 drills</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="pl1"><label class="label" for="pl1">Single-leg jumps</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="pl2"><label class="label" for="pl2">Seated & drop jumps</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="pl3"><label class="label" for="pl3">Bulgarian jumps</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- III Shoulder -->
+    <details class="section" id="sec-shoulder">
+      <summary>
+        <span class="s-title">III. Shoulder</span>
+        <span class="s-sub">4 lifts</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="sh1"><label class="label" for="sh1">Military press</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="sh2"><label class="label" for="sh2">Lateral raise</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="sh3"><label class="label" for="sh3">Front raise</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="sh4"><label class="label" for="sh4">Rotator cuffs — internal & external</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- IV Legs -->
+    <details class="section" id="sec-legs">
+      <summary>
+        <span class="s-title">IV. Legs</span>
+        <span class="s-sub">5 lifts</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="lg1"><label class="label" for="lg1">Belt squats</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="lg2"><label class="label" for="lg2">Forward lunges</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="lg3"><label class="label" for="lg3">Hip thrusts</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="lg4"><label class="label" for="lg4">Kettlebell swings</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="lg5"><label class="label" for="lg5">Seated calf raises</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- V Back -->
+    <details class="section" id="sec-back">
+      <summary>
+        <span class="s-title">V. Back</span>
+        <span class="s-sub">3 lifts</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="bk1"><label class="label" for="bk1">Delt rows</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="bk2"><label class="label" for="bk2">Lat prayer</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="bk3"><label class="label" for="bk3">Lat pulldown</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- VI Biceps -->
+    <details class="section" id="sec-biceps">
+      <summary>
+        <span class="s-title">VI. Biceps</span>
+        <span class="s-sub">3 lifts</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="bi1"><label class="label" for="bi1">Biceps curls</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="bi2"><label class="label" for="bi2">Hammer curls</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="bi3"><label class="label" for="bi3">Forearm afterburners</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- VII Triceps -->
+    <details class="section" id="sec-triceps">
+      <summary>
+        <span class="s-title">VII. Triceps</span>
+        <span class="s-sub">2 lifts</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="tr1"><label class="label" for="tr1">Dips</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="tr2"><label class="label" for="tr2">Triceps pulldown</label></li>
+        </ol>
+      </div>
+    </details>
+
+    <!-- VIII Chest -->
+    <details class="section" id="sec-chest">
+      <summary>
+        <span class="s-title">VIII. Chest</span>
+        <span class="s-sub">4 lifts</span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="content">
+        <ol class="exercises">
+          <li class="exercise"><input class="check" type="checkbox" id="ch1"><label class="label" for="ch1">Incline bench press</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="ch2"><label class="label" for="ch2">Flat bench press</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="ch3"><label class="label" for="ch3">Decline bench press</label></li>
+          <li class="exercise"><input class="check" type="checkbox" id="ch4"><label class="label" for="ch4">Pec fly</label></li>
+        </ol>
+      </div>
+    </details>
+  </main>
+
+  <div class="footer-tools" role="toolbar" aria-label="Quick actions">
+    <button class="btn" id="resetChecks">Clear checks</button>
+    <button class="btn" id="topBtn">Back to top</button>
+  </div>
+
+  <script>
+    // Expand/Collapse all
+    const allSections = () => Array.from(document.querySelectorAll('details.section'));
+    document.getElementById('expandAll').addEventListener('click', () => {
+      allSections().forEach(d => d.open = true);
+    });
+    document.getElementById('collapseAll').addEventListener('click', () => {
+      allSections().forEach(d => d.open = false);
+    });
+
+    // Reset all checkboxes
+    document.getElementById('resetChecks').addEventListener('click', () => {
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    });
+
+    // Back to top
+    document.getElementById('topBtn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // If launched as standalone (iOS Add to Home Screen), prevent 300ms delay on taps
+    document.addEventListener('touchstart', () => {}, { passive: true });
+  </script>
+</body>
+</html>
